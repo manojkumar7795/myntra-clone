@@ -18,7 +18,7 @@ const SubmitForm = () => {
     const types = ['image/png', 'image/jpeg'];
     const imageHandler = (e) => {
         const selectedFile = e.target.files[0];
-        rederFile(selectedFile, document.getElementById('slectfile'))
+        renderFile(selectedFile, document.getElementById('slectfile'))
         if (selectedFile && types.includes(selectedFile.type)) {
             setCard((preData) => {
                 return {
@@ -50,7 +50,7 @@ const SubmitForm = () => {
         })
 
     }
-    function rederFile(file, container) {
+    function renderFile(file, container) {
         if (file) {
             var reader = new FileReader();
 

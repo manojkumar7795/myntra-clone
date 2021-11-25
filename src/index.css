@@ -4,21 +4,6 @@
   padding: 0;
 }
 
-body {
-  margin: 0;
-  font-family: Helvetica, Arial, sans-serif;
-  /* background-color: #efefef; */
-}
-
-.header {
-  height: 72px;
-  background: #efefef;
-  padding: 16px 56px;
-  display: flex;
-  justify-content: center;
-  box-shadow: 0 4px 12px 0 rgb(0 0 0 / 5%);
-}
-
 .logo-container .logo-anchor .logo {
   width: 70px;
   height: 36px;
@@ -162,7 +147,7 @@ body {
   border-radius: 5px;
 }
 
-.file-control {
+.file-control,.imagefile  {
   position: relative;
   width: 140px;
   height: 140px;
@@ -179,6 +164,15 @@ body {
   top: 0;
   display: none;
 }
+.imagefile>img  {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
 
 label.file-control:before {
   content: '+ Seclect';
@@ -190,22 +184,18 @@ label.file-control:before {
   align-items: center;
   justify-content: space-around;
 }
-
-.btn {
-  color: #fff;
-  background-color: #198754;
-  border-color: #198754;
-  width: 90px;
-  height: 40px;
-  font-size: 20px;
-  border-radius: 6px;
-  margin-right: 10px;
-  display: block;
-  margin-top: 20px;
-  margin-left: 163px;
-  margin-bottom: 10px;
-  border-width: 0;
+.editImgBtn {
+  position: absolute;
+  right: 0;
+  bottom: 0px;
+  z-index: 1;
+  height: 20px;
+  width: 20px;
 }
+.hedden {
+  display: none;
+}
+
 
 .error-msg {
   color: red;
@@ -354,10 +344,12 @@ label.file-control:before {
 /* } */
 
 /* admin component */
+
 .add-Product-btn a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
+
 .admin-container {
   display: flex;
   flex-wrap: wrap;
@@ -377,4 +369,117 @@ label.file-control:before {
   flex-grow: 8;
   height: 100vh;
   overflow-y: scroll
+}
+
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  background: #343a40;
+  color: #fff;
+  transition: all 0.3s;
+  max-height: 100vh;
+  /* overflow-y: hidden; */
+}
+
+#sidebar>.active {
+  margin-left: -250px;
+}
+
+#sidebar .sidebar-header {
+  padding: 8px 5px 8px 7px;
+  background: #343a40;
+  min-height: 70px;
+}
+
+#sidebar .navbar .nav-link, #sidebar .navbar .nav-link:hover, #sidebar .navbar .nav-link:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+}
+
+#sidebar .navbar .nav-link {
+  padding: 10px;
+  font-size: 1.1em;
+  display: block;
+}
+
+#sidebar .navbar .nav-link:hover {
+  color: rgba(52, 58, 64, 0.97);
+  background: #fff;
+}
+
+#sidebar .navbar-nav {
+  width: 100%;
+}
+
+#sidebar .navbar-nav .navbar-nav .nav-link {
+  padding-left: 32px;
+}
+
+.name-icon {
+  background-color: #17a2b8;
+  border-radius: 50%;
+  float: left;
+  height: 52px;
+  line-height: 52px;
+  margin-right: 8px;
+  text-align: center;
+  width: 52px;
+  font-size: 24px;
+  font-weight: 400;
+  color: #fff;
+  border: 1px solid #06282d;
+}
+
+.name-icon-details {
+  vertical-align: text-top;
+  display: inline-block;
+  max-width: 174px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #fff;
+}
+
+.name-icon-details a {
+  color: #17a2b8;
+}
+
+.pl0 {
+  padding-left: 0 !important;
+}
+
+.max-hight {
+  max-height: 100vh !important;
+}
+
+.pr0 {
+  padding-right: 0 !important;
+}
+
+.mhfvh {
+  min-height: 100vh;
+}
+
+.ofya {
+  overflow-y: auto;
+}
+
+.productImageWidth {
+  width: 70px;
+}
+
+tr#allProducts:hover {
+  background-color: #f1f2f3;
+}
+
+.mlbtn {
+  margin-left: 10px;
+}
+
+.mrbtn {
+  margin-right: 10px;
 }
