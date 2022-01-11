@@ -6,124 +6,68 @@ import { AiOutlineDashboard } from "react-icons/ai";
 import { VscTag } from "react-icons/vsc";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { MdOutlineCollectionsBookmark, MdCollectionsBookmark } from "react-icons/md";
+import { withRouter } from 'react-router';
+import { FaCartArrowDown, FaUser } from 'react-icons/fa';
 
 
 
-const Sidebar = () => {
+const Sidebar = (props) => {
+    const location = props.location.pathname
+    const isCustomer = location == "/admin/customer";
+    const isDashboard = location == "/admin/dashboard"
+    const isAllProducts = location == "/admin/products";
+    const isCollectionGroups = location == '/admin/collection-groups';
+    const isCollections = location == '/admin/collections';
+    const isOrders = location == '/admin/orders';
 
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(isAllProducts || isCollectionGroups || isCollections);
+
+    const product = () => {
+        setOpen(!open)
+    }
 
     return (
         <>
-            <div id="sidebar" className="mhfvh">
-                <div className="sidebar-header">
-                    <span className="name-icon text-uppercase">A</span>
-                    <sapn className="name-icon-details">
-                        <span>Ashish Yadav</span><br />
-                        <a href="{{ path('su_logout') }}">Logout</a>
-                    </sapn>
-                </div>
-                <Navbar id="sidebar">
 
-                    <Nav defaultActiveKey="/admin/dashboard" className="flex-column">
-                        <Nav.Link href="/admin/dashboard">
-                            <AiOutlineDashboard />
-                            <span>Dashboard</span>
-                        </Nav.Link>
-                        <Nav.Link eventKey="link-1" onClick={() => setOpen(!open)}>
-                            <VscTag />
-                            <span>Products</span>
-                            {open ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                        </Nav.Link>
-                        <Collapse in={open}>
-                            <Nav className="flex-column">
-                                <Nav.Link href="/admin/products">
-                                    <BsTags />
-                                    <span>  All Products</span>
-                                </Nav.Link>
-                                <Nav.Link href ="/admin/collection-groups">
-                                    <MdCollectionsBookmark />
-                                    <span>Collection Groups</span>
-                                </Nav.Link>
-                                <Nav.Link href ="/admin/collections">
-                                    <MdOutlineCollectionsBookmark />
-                                    <span>Collections</span>
-                                </Nav.Link>
-                            </Nav>
-                        </Collapse>
-                    </Nav>
-
-                    {/* <ul class="list-unstyled components">
-            <li class="active">
-              <a href="/su_home">Dashboard</a>
-            </li>
-            <li>
-              <a href="#appUsersSubmenu" data-toggle="collapse" aria-expanded="false">Products</a>
-              <ul class="collapse list-unstyled" id="appUsersSubmenu">
-                <li><a href="">All Products</a></li>
-                <li><a href="">Collaction Groups</a></li>
-                <li ><a href="">Collactions</a></li>
-              </ul>
-            </li>
-            <li >
-              <a href="">Faqs</a>
-            </li>
-            <li >
-              <a href="">Demo Stores</a>
-            </li>
-          </ul> */}
-                </Navbar>
-                {/* <Navigation
-              // you can use your own router's api to get pathname
-              activeItemId="/management/members"
-              onSelect={({itemId}) => {
-                window.open(itemId, "_self")
-              }}
-              items={[
-                {
-                  title: 'Dashboard',
-                  itemId: '/dashboard',
-                  // you can use your own custom Icon component as well
-                  // icon is optional
-                  elemBefore: () => <Icon name="inbox" />,
-                },
-                {
-                  title: 'Products',
-                  elemBefore: () => <Icon name="tag" />,
-                  subNav: [
-                    {
-                      title: 'Collection Group',
-                      itemId: '/collection_Group',
-                    },
-                    {
-                      title: 'Collection',
-                      itemId: '/Collection',
-                    },
-                    {
-                      title: 'Products',
-                      itemId: '/admin/product',
-                    },
-                    {
-                      title: 'Product Variant',
-                      itemId: '/admin/variant',
-                    },
-                  ],
-                },
-                {
-                  title: 'Another Item',
-                  itemId: '/another',
-                  subNav: [
-                    {
-                      title: 'Teams',
-                      itemId: '/management/teams',
-                    },
-                  ],
-                },
-              ]}
-            /> */}
-            </div>
+            <Navbar id="sidebar">
+                <Nav className="flex-column">
+                    {/* <Nav.Link href="/admin/dashboard" className={isDashboard ? "activeTab" : ''}>
+                        <AiOutlineDashboard />
+                        <span>Dashboard</span>
+                    </Nav.Link> */}
+                    <Nav.Link href={isOrders ? "#" : '/admin/orders'} className={isOrders ? 'activeTab' : ''}>
+                        <AiOutlineDashboard />
+                        <span>Orders</span>
+                    </Nav.Link>
+                    <Nav.Link href="/admin/customer" className={isCustomer ? "activeTab" : ''}>
+                        <FaUser />
+                        <span>Customer</span>
+                    </Nav.Link>
+                    <Nav.Link eventKey="link-2" onClick={() => product()} className={open ? 'activeTab' : ''}>
+                        <VscTag />
+                        <span>Products</span>
+                        {open ? <IoIosArrowUp className="sidbarArrow" /> : <IoIosArrowDown className='sidbarArrow' />}
+                    </Nav.Link>
+                    <Collapse in={open}>
+                        <Nav className="flex-column">
+                            <Nav.Link className={isAllProducts ? 'activeTab' : ''} href={isAllProducts ? "#" : "/admin/products"} >
+                                <BsTags />
+                                <span>  All Products</span>
+                            </Nav.Link>
+                            <Nav.Link className={isCollectionGroups ? 'activeTab' : ''} href={isCollectionGroups ? '#' : '/admin/collection-groups'}  >
+                                <MdCollectionsBookmark />
+                                <span>Collection Groups</span>
+                            </Nav.Link>
+                            <Nav.Link className={isCollections ? 'activeTab' : ''} href={isCollections ? '#' : "/admin/collections"} >
+                                <MdOutlineCollectionsBookmark />
+                                <span>Collections</span>
+                            </Nav.Link>
+                        </Nav>
+                    </Collapse>
+                </Nav>
+            </Navbar>
         </>
     )
 }
 
-export default Sidebar
+export default withRouter(Sidebar)

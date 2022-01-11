@@ -14,7 +14,7 @@ const CollectionTypeDropdown = (props) => {
     }
     const fetchCollectionsByType = (collectionType) => {
         db.collection('homepage_cards')
-            .doc(collectionType).get().then(document => { 
+            .doc(collectionType).get().then(document => {
                 if (!document.exists) {
                     props.setCollections((preValue) => {
                         return {
@@ -56,7 +56,7 @@ const CollectionTypeDropdown = (props) => {
                         })}
                     </select>
                 </div>
-            </div> 
+            </div>
             {props.collections.cards.map(card => {
                 return (
                     <div className="homepage-card">

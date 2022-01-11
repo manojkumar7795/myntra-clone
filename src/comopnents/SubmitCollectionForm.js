@@ -134,7 +134,7 @@ const SubmitForm = () => {
                         <div className="homepage-card">
                             <div>
                                 <label htmlFor="imageFill" className='file-control'>
-                                    <img id="slectfile" alt='slectfile' width="100%" height="100%"/>
+                                    <img id="slectfile" alt='slectfile' width="100%" height="100%" />
                                 </label>
                                 <input type="file" name="imageFill" id="imageFill" className='form-control' onChange={imageHandler} />
                             </div>

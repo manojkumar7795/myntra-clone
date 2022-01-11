@@ -1,53 +1,72 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from './confing/confing';
 
-const typeOfCollections = {
-    DEALS_OF_THE_DAY: "DEALS OF THE DAY",
-    BIGGEST_DEALS_ON_TOP_BRANDS: "BIGGEST DEALS ON TOP BRANDS",
-    CATEGORIES_TO_BAG: "CATEGORIES TO BAG",
-    EXPLORE_TOP_BRANDS: "EXPLORE TOP BRANDS",
-    TRENDING_IN_WESTERN_WEAR: "TRENDING IN WESTERN WEAR",
-    TRENDING_IN_INDIAN_WEAR: "TRENDING IN INDIAN WEAR",
-    TRENDING_IN_SPORTS_WEAR: "TRENDING IN SPORTS WEAR",
-    TRENDING_IN_FOOTWEAR: "TRENDING IN FOOTWEAR",
-    TRENDING_IN_ACCESSORIES: "TRENDING IN ACCESSORIES"
-}
 
 
 const Data = () => {
-    const [collectionsList, setCollectionsList] = useState({
-        list: []
-    })
-    if (Object.keys(collectionsList.list).length === 0) {
-        Object.keys(typeOfCollections).forEach(collectionType => {
-            db.collection('homepage_cards').doc(collectionType).onSnapshot(querySnapshot => {
-                setCollectionsList((prevCollectionsList) => {
-                    const newCollectonList = { ...prevCollectionsList };
-                    newCollectonList.list.push(querySnapshot.data());
-                    return newCollectonList;
+    const [collectionsList, setCollectionGroups] = useState([])
+
+    const collections = async (collectionGroups) => {
+        const promises = []
+        collectionGroups.forEach(collectionGroup => {
+            const promise = db.collection('collections')
+                .where("id", 'in', collectionGroup.collectionIds)
+                .get().then(async collectionsSnapshot => {
+                    collectionGroup.collections = collectionsSnapshot.docs.map(s => s.data());
                 })
-
-            })
-
+            promises.push(promise)
         })
-    }
+
+        await Promise.all(promises);
+
+        return collectionGroups;
+    };
+
+    useEffect(() => {
+        const collectionData = JSON.parse(sessionStorage.getItem('collectionGroupData'))
+        if (collectionData == null || Date.now() - collectionData.timestamp > 600000) {
+            db.collection('collection-groups').where('showOnHomepage', '==', true).get()
+                .then(collectionGroupsSnapshot => {
+                    collections(collectionGroupsSnapshot.docs.map(s => s.data()))
+                        .then(data => {
+                            // let emptydata = new Array(collectionsList[0].products.length).fill(null)
+                            // console.log("emptydata", collectionsList.products.length)
+                            setCollectionGroups(data)
+                            sessionStorage.setItem('collectionGroupData', JSON.stringify({
+                                data: data,
+                                timestamp: Date.now()
+                            }))
+                        });
+
+                })
+        }
+        else {
+            setCollectionGroups(collectionData.data)
+        }
+    }, [])
+
 
     return (
         <>
-            {collectionsList.list.map(collectionsData => {
+            {collectionsList.map(collectionGroupdata => {
                 return (
                     <section className="main-card--container">
                         <div className="card-contaner ">
                             <div className="title-banner">
-                                {collectionsData.title}
+                                {collectionGroupdata.title}
                             </div>
                             <div className="cards">
-                                {collectionsData.cards && collectionsData.cards.map(data => {
+                                {collectionGroupdata.collections.map(data => {
+
                                     return (
                                         <>
-                                            <a href={data.url} className="card-ankar">
-                                                <img className="card-img" src={data.image} alt="" />
-                                            </a>
+                                            <div>
+                                                <a href={"/collections/" + data.slug} className="card-ankar">
+                                                    <img className="card-img" src={data.image} alt="" />
+                                                </a>
+
+                                            </div>
+
                                         </>
                                     )
                                 })}

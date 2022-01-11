@@ -1,5 +1,5 @@
 import React from 'react'
-import  { useState } from 'react'
+import { useState } from 'react'
 import { db, fStorage } from './confing/confing';
 
 
@@ -8,7 +8,7 @@ import { db, fStorage } from './confing/confing';
 const AddProducts = () => {
 
     const [productDetail, setProductDetail] = useState({
-        ProductBrand:"",
+        ProductBrand: "",
         productName: "",
         productPrice: 0,
         productImg: null,
@@ -20,7 +20,7 @@ const AddProducts = () => {
         const { name, value } = event.target;
         setProductDetail((preVal) => {
             return {
-                ...preVal,  
+                ...preVal,
                 [name]: value,
             }
         });
@@ -59,7 +59,7 @@ const AddProducts = () => {
         if (productDetail.error) {
             return;
         }
-        const {ProductBrand, productName, productPrice, productImg, error } = productDetail
+        const { ProductBrand, productName, productPrice, productImg, error } = productDetail
         const uplodTask = fStorage.ref(`product-images/${productImg.name}`).put(productImg);
 
         uplodTask.on(`State_changed`, snapshot => {
@@ -70,22 +70,22 @@ const AddProducts = () => {
         }, () => {
             fStorage.ref(`product-images`).child(productImg.name).getDownloadURL().then(url => {
                 db.collection(`Products`).add({
-                    ProductBrand:ProductBrand,
+                    ProductBrand: ProductBrand,
                     ProductName: productName,
                     ProductPrice: Number(productPrice),
                     ProductImg: url
                 }).then(() => {
-                    setProductDetail(()=>{
+                    setProductDetail(() => {
                         return {
-                            ProductBrand:'',
-                            productName : '',
-                            productPrice : 0,
-                            productImg : null,
-                            error : "",
+                            ProductBrand: '',
+                            productName: '',
+                            productPrice: 0,
+                            productImg: null,
+                            error: "",
                         }
                     })
 
-                   
+
                     document.getElementById("file").value = "";
                 }).catch(err => error = err.message);
             });
@@ -98,12 +98,12 @@ const AddProducts = () => {
             <h2>ADD PRODUCTS</h2>
             <hr />
             <form autoComplete="off" className='form-group' onSubmit={addProduct}>
-            <label htmlFor="product-brand">Product Brand</label>
-                <input type="text" id="product-brand" className='add-Product-form' name="ProductBrand" 
+                <label htmlFor="product-brand">Product Brand</label>
+                <input type="text" id="product-brand" className='add-Product-form' name="ProductBrand"
                     onChange={getValue} value={productDetail.ProductBrand} />
-                    <br />
+                <br />
                 <label htmlFor="product-name">Product Name</label>
-                <input type="text" id="product-name" className='add-Product-form' name="productName" 
+                <input type="text" id="product-name" className='add-Product-form' name="productName"
                     onChange={getValue} value={productDetail.productName} />
                 <br />
                 <label htmlFor="product-price">Product Price</label>
@@ -111,7 +111,7 @@ const AddProducts = () => {
                     onChange={getValue} value={productDetail.productPrice} />
                 <br />
                 <label htmlFor="product-img">Product Image</label>
-                <input type="file" className="add-Product-form"  id="product-img" name='productimg' required id="file"
+                <input type="file" className="add-Product-form" id="product-img" name='productimg' required id="file"
                     onChange={productImgHandler} />
                 <br />
                 {productDetail.error && <span className='error-msg text-danger'>{productDetail.error}<br /></span>}

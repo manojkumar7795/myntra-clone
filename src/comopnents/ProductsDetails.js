@@ -5,7 +5,7 @@ const ProductsDetails = (props) => {
     let productId = props.match.params.id;
     const [productDetail, setProductDetail] = useState({
         list: []
-    
+
     })
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const ProductsDetails = (props) => {
                 const newProdutList = { ...Prevdata }
                 newProdutList.list.push(snapshot.data())
                 return newProdutList
-                
+
             })
 
         })

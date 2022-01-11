@@ -8,9 +8,9 @@ const Header = (props) => {
             <div className="heading">
                 {props.heading}
             </div>
-            {props.action && <Button variant="outline-success">
-                <Link to={props.action.url}>{props.action.title}</Link>
-            </Button>}
+            {props.action &&
+                <Link to={props.action.url}><Button variant="outline-success">{props.action.title} </Button></Link>
+            }
         </div>
     )
 }
