@@ -34,7 +34,6 @@ const OrderPaymentStatus = (props) => {
             window.open(`/admin/orders/${orderId}`, '_self')
         }, 1000);
     }
-    console.log('paymentStatusUpdate', paymentStatusUpdate)
     return (
 
         <div className='paymentStautsContainer'>

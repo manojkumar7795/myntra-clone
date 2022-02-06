@@ -2,16 +2,12 @@ import Button from '@restart/ui/esm/Button'
 import React, { useState } from 'react'
 import { Form } from 'react-bootstrap'
 import { VscLock } from 'react-icons/vsc'
-import { MToast, toast } from '../admin/MToast';
+import MToastContainer from '../../containers/MToastContainer';
 import { fAuth } from '../confing/confing';
 
 
 
-const Login = () => {
-
-    const newToast = (type) => {
-        toast.error('Error', type)
-    }
+const Login = (props) => {
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -44,7 +40,7 @@ const Login = () => {
             window.open('/admin', '_self')
 
         }).catch(err => {
-            newToast(err.message)
+            props.MToastDangerHandler({Title:'error',description:err.message})
         })
 
     }
@@ -53,7 +49,7 @@ const Login = () => {
         <>
 
             <div className="login">
-                <MToast />
+            <MToastContainer.MToast />
                 <div className="panel">
                     <div className="panel-body">
                         <div className="logo-container login-logo">

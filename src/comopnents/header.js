@@ -1,24 +1,23 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { AiOutlineHeart } from 'react-icons/ai';
 import { BsHandbag } from 'react-icons/bs';
-import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom'
 import { fAuth } from './confing/confing';
 
 const Header = () => {
-    const history = useHistory();
-        const [searchValue, setSearchValue] = useState('')
+        // const [searchValue, setSearchValue] = useState('')
 
     const handleLogout = () => {
         fAuth.signOut()
         localStorage.removeItem("userName")
+        localStorage.removeItem("userId")
+
     }
 
     if (localStorage.getItem('localCart')) {
-        var { totalQty } = JSON.parse(localStorage.getItem('localCart'));
-    }
-    const userName = JSON.parse(localStorage.getItem('userName'))
-
+        var {totalQty } = JSON.parse(localStorage.getItem('localCart'));
+    } 
+        const userName = JSON.parse(localStorage.getItem('userName'))
     const getSearchData=(e)=>{
         if (e.charCode === 13) {
         const searchValue =  e.target.value
@@ -46,7 +45,7 @@ const Header = () => {
             </Link>
             <Link to="/checkout/cart" className='headerAddToBag'>
                 <BsHandbag className='productBag' />
-                <span className='no-of-products'>{totalQty == 0 ? null : totalQty}</span>
+                <span className='no-of-products'>{totalQty == 0 ? null :totalQty}</span>
                 <span className='bagTitle'>Bag</span>
             </Link>
             {!userName && <div className='rightside'>

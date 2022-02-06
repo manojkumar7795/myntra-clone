@@ -4,7 +4,7 @@ import firebase from 'firebase/compat/app';
 import { Modal } from 'react-bootstrap';
 
 const Addressess = (props) => {
-    const userId = props.userId
+    const userId = JSON.parse(localStorage.getItem('userId'))
 
 
     const [address, setAddress] = useState({

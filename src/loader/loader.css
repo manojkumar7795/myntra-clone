@@ -1,0 +1,22 @@
+.loader{
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    display: inline-block;
+    vertical-align: top;
+    position: fixed;
+    z-index: 22222;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+  }
+  .displayNone {
+      display: non;
+  }
+  
+  /*
+    Set the color of the icon
+  */
+  svg .path{
+    fill: black;
+  }

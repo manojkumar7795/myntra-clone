@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Image, Modal } from 'react-bootstrap'
 import { db } from '../confing/confing'
-import { MdArrowForwardIos } from 'react-icons/md';
-import Customer from '../admin/products/Customer';
 
-const Accounts = (props) => {
-    const userId = props.userId
+const Accounts = () => {
+    const userId = JSON.parse(localStorage.getItem('userId'))
     const [customer, setCustomer] = useState({
         name: '',
         mobile: 0,
@@ -29,7 +27,7 @@ const Accounts = (props) => {
 
         db.collection('customer').doc(`${userId}`).get().then(snapshot => {
             const customerDetail = snapshot.data();
-            setTimeout(() => {
+            // setTimeout(() => {
                 setCustomer((prevObj) => {
                     return {
                         ...prevObj,
@@ -38,12 +36,11 @@ const Accounts = (props) => {
                         emailId: customerDetail.email
                     }
                 })
-            }, 1000);
+            // }, 1000);
         })
     }, [])
     // }
     const editDetails = () => {
-        console.log('hello')
     }
 
 

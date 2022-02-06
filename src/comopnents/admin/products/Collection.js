@@ -4,7 +4,7 @@ import { BsPencilSquare } from 'react-icons/bs'
 import { db, fStorage } from '../../confing/confing';
 import firebase from 'firebase/compat/app';
 import { Link } from 'react-router-dom';
-import { MToast, toast } from '../MToast';
+import MToastContainer from '../../../containers/MToastContainer';
 
 
 const Collection = (props) => {
@@ -18,23 +18,23 @@ const Collection = (props) => {
         id: ''
 
     })
-    const newToast = (type) => {
-        if (type == "success") {
-            toast.success('Collection success ', 'Collection success Upload!')
-        }
-        else if (type == 'imageErrror') {
-            toast.error('image not valid  ', ' Error :- Please select a valid image type (jpg,png or webp)!')
-        }
-        else if (type == 'uploadImageError') {
-            toast.error('pleace selcet image', 'Error :- Please select a valid image ')
-        }
-        else if (type == 'slug') {
-            toast.error(' pleace select unique slug ', 'this  slug is already exist')
-        }
-        else {
-            toast.error('Error ', type)
-        }
-    }
+    // const newToast = (type) => {
+    //     if (type == "success") {
+    //         toast.success('Collection success ', 'Collection success Upload!')
+    //     }
+    //     else if (type == 'imageErrror') {
+    //         toast.error('image not valid  ', ' Error :- Please select a valid image type (jpg,png or webp)!')
+    //     }
+    //     else if (type == 'uploadImageError') {
+    //         toast.error('pleace selcet image', 'Error :- Please select a valid image ')
+    //     }
+    //     else if (type == 'slug') {
+    //         toast.error(' pleace select unique slug ', 'this  slug is already exist')
+    //     }
+    //     else {
+    //         toast.error('Error ', type)
+    //     }
+    // }
 
     const generateCollactionId = () => {
         return Date.now() + Math.floor(1000 + Math.random() * 9000)
@@ -104,7 +104,8 @@ const Collection = (props) => {
             })
         }
         else {
-            newToast('imageErrror')
+            // newToast('imageErrror')
+            props.MToastDangerHandler({title:'image not valid  ', description:' Error :- Please select a valid image type (jpg,png or webp)!'})
         }
 
     }
@@ -147,11 +148,13 @@ const Collection = (props) => {
 
                 }
             })
-            newToast('success')
+            // newToast('success')
+            props.MToastSuccessHandler({title:'Collection success ', description:'Collection success Upload!'})
             // addCollectionId(collectionId);
             // window.open(`/admin/collection-groups/${props.match.params.cgid}/collection`, '_self')
         }).catch(err => {
-            newToast(err.message)
+            // newToast(err.message)
+            props.MToastDangerHandler({Title:'error',description:err.message})
         });
 
 
@@ -163,13 +166,15 @@ const Collection = (props) => {
         e.preventDefault();
         db.collection('collections').where('slug', '==', collection.slug).onSnapshot(snapshot => {
             if (snapshot.docs.length > 0 && collectionId !== snapshot.docs[0].id) {
-                newToast('slug')
+                // newToast('slug')
+                props.MToastDangerHandler({title:'pleace select unique slug ',description:'this  slug is already exist'})
                 return
             }
 
             if (typeof collection.image == 'object') {
                 if (collection.image == null) {
-                    newToast('uploadImageError')
+                    // newToast('uploadImageError')
+                    props.MToastDangerHandler({titel:'pleace selcet image', description:'Error :- Please select a valid image'})
                     return
                 }
 
@@ -188,7 +193,7 @@ const Collection = (props) => {
 
     return (
         <div className='add-Product-container'>
-            <MToast />
+            <MToastContainer.MToast />
             <Link to={'/admin/collections'} >
                 <Button className="btn btn-success">back </Button>
             </Link>

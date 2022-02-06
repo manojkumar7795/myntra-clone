@@ -11,40 +11,47 @@ import { db } from '../confing/confing';
 
 
 const Cart = (props) => {
-    const userName = props.user;
-    const { dispatch } = useContext(CartContext)
-
+    const userId = JSON.parse(localStorage.getItem('userId'))
+    const userName = JSON.parse(localStorage.getItem('userName'))
+// var { shoppingCart, totalPrice, totalQty, totalRackPrice } = props.data
     var { shoppingCart, totalPrice, totalQty, totalRackPrice } = JSON.parse(localStorage.getItem('localCart'))
     const moveToWishList = () => {
         const wishListData = {
             shoppingCart,
             totalPrice,
             totalRackPrice,
-            totalQty
+            totalQty,
+            userId:userId
         }
-        localStorage.setItem("wishList", JSON.stringify(wishListData))
-        dispatch({ type: 'EMPTY' })
+        db.collection("wishList").doc(`${userId}`).set(wishListData).then(() => {
+            props.EmptyHandler()
+        })
+        db.collection("wishList").doc(`${userId}`).get().then(snapshot=>{
+            localStorage.setItem("wishList", JSON.stringify(snapshot.data()))
+        })
+        
     }
     return (
         <>
-            <UserHeader/>
+            <UserHeader />
             <div className='empty-cart-container'>
                 {
                     shoppingCart.length === 0 && <>
                         <img className='cart-image-banner' src="https://constant.myntassets.com/checkout/assets/img/empty-bag.png" alt="" />
                         <div className='empty-cart-title'>Hey, it feels so light!</div>
                         <div className='empty-cart-dec'>There is nothing in your bag. Let's add some items.</div>
-                        <div><Link className='empty-cart-wishlist' to="/">ADD ITEMS FROM WISHLIST</Link></div>
+                        <div><Link className='empty-cart-wishlist' to="/wishlist">ADD ITEMS FROM WISHLIST</Link></div>
                     </>
                 }
             </div>
             <div className='cart-container'>
                 {shoppingCart.length > 0 && <div className="cartProductBlock">
                     <div className="removeItemButtonContainer">
-                        <button className='RemoveAllItem' onClick={() => dispatch({ type: 'EMPTY' })}>REMOVE</button>
+                        <button className='RemoveAllItem' onClick={() => props.EmptyHandler()}>REMOVE</button>
                         <button className='empty-cart-wishlist' onClick={() => moveToWishList()}>MOVE TO WISHLIST</button>
                     </div>
                     {shoppingCart && shoppingCart.map(cartProduct => {
+
                         return (
                             <div className='productContainer'>
                                 <div className="cartImageContainer">
@@ -53,7 +60,7 @@ const Cart = (props) => {
                                 <div className="productCartDetails">
                                     <div className="removeCartItemAndTitle">
                                         <div className="cartTitle">{cartProduct.productTitle}</div>
-                                        <button className='removeItemButton' onClick={() => dispatch({ type: 'DELETE', id: cartProduct.variantId, cartProduct })}>
+                                        <button className='removeItemButton' onClick={() =>props.DeleteHandler({ id: cartProduct.variantId, cartProduct })}>
                                             <VscAdd size={25} className='removeItem' />
                                         </button>
                                     </div>
@@ -61,11 +68,11 @@ const Cart = (props) => {
                                     <div className="soldBy">Sold by : {cartProduct.inventory.sku}</div>
 
                                     <div className="cartProductQtyContainer">
-                                        <IoMdRemove className='cartProductQtyDec' onClick={() => dispatch({ type: 'DEC', id: cartProduct.variantId, cartProduct })} />
+                                        <IoMdRemove className='cartProductQtyDec' onClick={() => props.DecHandler({ id: cartProduct.variantId, cartProduct })} />
                                         <span className='cartProductQty' >
                                             Qty : {cartProduct.qty}
                                         </span>
-                                        <GrAdd className='cartProductQtyIns' onClick={() => dispatch({ type: 'INC', id: cartProduct.variantId, cartProduct })} />
+                                        <GrAdd className='cartProductQtyIns' onClick={() => props.IncHandler({id: cartProduct.variantId, cartProduct })} />
                                     </div>
                                     <span className="totalSellPrice"><BiRupee /> {cartProduct.TotalProductPrice}</span>
                                     <span className="totalRackPrice"><del><BiRupee />{cartProduct.TotalProductRackPrice}</del></span>

@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { db, fStorage } from '../../confing/confing'
 import { Button } from 'react-bootstrap';
 import { BsPencilSquare } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-import { MToast, toast } from '../MToast';
+import { Link } from 'react-router-dom'
 import { description, MyEditor } from './MyEditor';
-// import MyEditor from './MyEditor';
+import MToastContainer from '../../../containers/MToastContainer';
 
 
 
@@ -32,21 +29,6 @@ const productTags = [
 const ProductDetails = (props) => {
 
     let productId = props.match.params.pid
-
-    const newToast = (type) => {
-        if (type == "success") {
-            toast.success('product success ', 'product success Upload!')
-        }
-        else if (type == 'imageErrror') {
-            toast.error('image not valid  ', ' Error :- Please select a valid image type (jpg,png or webp)!')
-        }
-        else if (type == 'slug') {
-            toast.error(' pleace select unique slug ', 'this  slug is already exist')
-        }
-        else {
-            toast.error('Error ', type)
-        }
-    }
 
     const [product, setProduct] = useState({
         title: '',
@@ -135,7 +117,7 @@ const ProductDetails = (props) => {
             })
         }
         else {
-            newToast('imageErrror')
+            props.MToastDangerHandler({title:'image not valid  ', description:' Error :- Please select a valid image type (jpg,png or webp)!'})
         }
 
     }
@@ -248,7 +230,8 @@ const ProductDetails = (props) => {
 
         db.collection('products').doc(`${productId}`).set(updatedData)
             .then(() => {
-                newToast('success')
+                props.MToastSuccessHandler({title:'Collection success ', description:'Collection success Upload!'})
+                // addCollectionId(collectionId);
                 setProduct(() => {
                     return {
                         ...product,
@@ -275,7 +258,7 @@ const ProductDetails = (props) => {
 
 
             }).catch(err => {
-                newToast(err.message)
+                props.MToastDangerHandler({Title:'error',description:err.message})
             });
 
     }
@@ -291,7 +274,7 @@ const ProductDetails = (props) => {
         db.collection('products').where('slug', '==', product.slug).onSnapshot(snapshot => {
 
             if (snapshot.docs.length > 0 && productId !== snapshot.docs[0].id) {
-                newToast('slug')
+                props.MToastDangerHandler({title:'pleace select unique slug ',description:'this  slug is already exist'})
                 return
             }
             if (typeof product.mainImage == "object") {
@@ -314,7 +297,7 @@ const ProductDetails = (props) => {
             <a href="/admin/products">
                 <button type="button" class="btn btn-success btn btn-primary">back </button>
             </a>
-            <MToast />
+            <MToastContainer.MToast/>
             <h2>product</h2>
             <hr />
             <form className="form-group" onSubmit={addProduct} autoComplete="off">

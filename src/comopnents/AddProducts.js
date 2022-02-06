@@ -64,7 +64,6 @@ const AddProducts = () => {
 
         uplodTask.on(`State_changed`, snapshot => {
             const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            console.log(progress)
         }, err => {
             error = err.message
         }, () => {

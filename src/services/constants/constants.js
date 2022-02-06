@@ -1,0 +1,9 @@
+export const ADD_TO_CART='ADD_TO_CART '
+export const MOVE_TO_CART='MOVE_TO_CART'
+export const INC="INC"
+export const DEC='DEC'
+export const DELETE='DELETE'
+export const EMPTY='EMPTY'
+export const DANGER = 'DANGER'
+export const SUCCESS='SUCCESS'
+export const CLOSE='CLOSE'

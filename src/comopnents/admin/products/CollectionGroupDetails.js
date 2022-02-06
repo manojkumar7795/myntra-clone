@@ -2,9 +2,8 @@ import { concat, set } from 'lodash';
 import React, { useEffect, useState } from 'react'
 import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import MToastContainer from '../../../containers/MToastContainer';
 import { db } from '../../confing/confing';
-import { MToast, toast } from '../MToast';
-
 
 const CollectionGroupDetails = (props) => {
     let collectionGroupId = props.match.params.cgId
@@ -15,19 +14,6 @@ const CollectionGroupDetails = (props) => {
         showOnHomepage: false,
         slug: ''
     })
-
-    const newToast = (type) => {
-        if (type == "success") {
-            toast.success('Collections success ', 'Collections success Upload!')
-        }
-        else if (type == 'slug') {
-            toast.error(' pleace select unique slug ', 'this  slug is already exist')
-        }
-        else {
-            toast.error('Error ', type)
-        }
-    }
-
     const genreateCollectionGroupsId = () => {
         return Date.now() + Math.floor(1000 + Math.random() * 9000)
     }
@@ -100,7 +86,7 @@ const CollectionGroupDetails = (props) => {
         e.preventDefault();
         db.collection('collection-groups').where('slug', '==', collectionGroups.slug).onSnapshot(snapshot => {
             if (snapshot.docs.length > 0 && collectionGroupId !== snapshot.docs[0].id) {
-                newToast('slug')
+                props.MToastDangerHandler({title:'pleace select unique slug ',description:'this  slug is already exist'})
                 return
             }
 
@@ -122,9 +108,9 @@ const CollectionGroupDetails = (props) => {
 
                     }
                 })
-                newToast('success')
+                props.MToastSuccessHandler({title:'Collection success ', description:'Collection success Upload!'})
             }).catch(err => {
-                newToast(err.message)
+                props.MToastDangerHandler({Title:'error',description:err.message})
             });
 
             // window.history.pushState(true, `${collectionGroupId}`, `/admin/collection-groups/${collectionGroupId}`);
@@ -135,7 +121,7 @@ const CollectionGroupDetails = (props) => {
 
     return (
         <div className='add-Product-container'>
-            <MToast />
+            <MToastContainer.MToast />
             <Link to={'/admin/collection-groups'} >
                 <Button className="btn btn-success">back </Button>
             </Link>

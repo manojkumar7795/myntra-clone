@@ -13,8 +13,8 @@ import UserHeader from './UserHeader';
 
 
 const Address = (props) => {
-    const userName = props.user;
-    const userId = props.userId;
+    const userName = JSON.parse(localStorage.getItem('userName'))
+    const userId = JSON.parse(localStorage.getItem('userId'))
 
     const [address, setAddress] = useState({
         name: '',

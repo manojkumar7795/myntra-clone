@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useHistory } from "react-router-dom";
-import { Button, Modal, Image } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Button, Image } from 'react-bootstrap'
 import { db, fStorage } from '../../confing/confing'
 import firebase from 'firebase/compat/app';
 import { MdDeleteForever } from 'react-icons/md';
 import { cloneDeep } from 'lodash';
-import { MToast, toast } from '../MToast';
+import MToastContainer from '../../../containers/MToastContainer';
 
 
 
@@ -28,18 +26,6 @@ const Variant = (props) => {
             },
         }
 
-    }
-
-    const newToast = (type) => {
-        if (type == "success") {
-            toast.success('variant success ', 'variant success Upload!')
-        }
-        else if (type == 'imageErrror') {
-            toast.error('image not valid  ', ' Error :- Please select a valid image type (jpg,png or webp)!')
-        }
-        else {
-            toast.error('Error ', type)
-        }
     }
 
     // variant details  push in  db 
@@ -164,7 +150,6 @@ const Variant = (props) => {
     const setInclusivTax = (e) => {
         const name = e.target.name;
         const checked = e.target.checked
-        console.log("setInclusive", name, checked)
         setState((preValue) => {
             const inclusivTax = { ...preValue.variant };
             inclusivTax.pricing[name] = checked
@@ -194,7 +179,7 @@ const Variant = (props) => {
         }
 
         else {
-            newToast('imageErrror')
+            props.MToastDangerHandler({title:'image not valid  ', description:' Error :- Please select a valid image type (jpg,png or webp)!'})
         }
 
     }
@@ -246,12 +231,12 @@ const Variant = (props) => {
             .then(() => {
                 setState(() => emptyState)
                 addVariantId(variantId)
-                newToast('success')
+                props.MToastSuccessHandler({title:'Collection success ', description:'Collection success Upload!'})
                 setTimeout(() => {
                     window.open(`/admin/products/${Number(props.match.params.pid)}/variants`, '_self')
                 }, 3000);
             }).catch(err => {
-                newToast(err.message)
+                props.MToastDangerHandler({Title:'error',description:err.message})
             })
     }
 
@@ -288,7 +273,7 @@ const Variant = (props) => {
         <>
             <div className='add-Product-container'>
 
-                <MToast />
+                <MToastContainer.MToast />
                 <form className='form-group' autoComplete="off" onSubmit={addVariant}>
                     <div className="images-container">
                         {state.variant.images.map((item, index) => {

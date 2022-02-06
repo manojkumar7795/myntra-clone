@@ -42,9 +42,7 @@ const Customer = () => {
                             <div className='customerOrderName'>{customerDetail.name}</div>
                             <div className='countOrdersContainer'>
                                 <div className='countOrders'>{customerDetail.orderCount} Order</div>
-                                {console.log('customer', customerDetail.order.reduce((o1, o2) => o1 + o2.totalPrice, 0))}
                                 {customerDetail.order.map(orderDetail => {
-                                    console.log("orderDetail", orderDetail)
                                 })}
                                 <div className='orderPrice'> <BiRupee />{customerDetail.order.reduce((prev, o) => prev + o.totalPrice, 0)}</div>
                             </div>

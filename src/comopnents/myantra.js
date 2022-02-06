@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Header from './header';
 import CarouselBase from './CarouselBase';
 import Data from './Data';
-import { useHistory } from 'react-router-dom';
-import { fAuth } from './confing/confing';
 
-const Myantra = ({user}) => {
+const Myantra = () => {
     // const history = useHistory();
    
 // useEffect(() => {
@@ -17,7 +15,7 @@ const Myantra = ({user}) => {
 // },[])
     return (
         <>
-            <Header user = {user}  />
+            <Header/>
             <CarouselBase />
             <Data/>
         </>

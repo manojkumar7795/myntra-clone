@@ -48,7 +48,6 @@ const Collections = () => {
                 <tbody>
                     {state.map(collection => {
                         const collectionDetail = collection.data()
-                        console.log(collectionDetail)
                         return (
                             <tr key={collectionDetail.id}>
                                 <td>{collectionDetail.id}</td>

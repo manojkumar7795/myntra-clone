@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import LoderContainer from '../../containers/LoderContainer'
 import { db } from '../confing/confing'
 import Header from '../header'
 import ProductList from './ProductList'
@@ -15,7 +16,6 @@ const Collection = (props) => {
                     product.products = productSanapshot.docs.map(s => s.data())
                 })
             promises.push(promis)
-
         })
         await Promise.all(promises);
 
@@ -35,6 +35,7 @@ const Collection = (props) => {
                             }
                         })
                         const emptyData = new Array(4 - fillteredProduct.length % 4).fill(null)
+                        props.LoderCloseHandler({visible: false})
                         setProducts({
                             ...data[0],
                             products: fillteredProduct.concat(emptyData)
@@ -46,6 +47,7 @@ const Collection = (props) => {
         <>
         <Header />
             <div className="collectionTitle"  >{products.title}</div>
+            {props.data.visible && <LoderContainer.loder/>}
             <div className="collections-container">
                 {Object.keys(products).length && products.products.map(product => {
                     return (

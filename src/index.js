@@ -7,7 +7,6 @@ import App from './App';
 // import "bootstrap/dist/css/boostrap.min.css"
 import './index.css'
 
-
 ReactDOM.render(
   <>
     <App />

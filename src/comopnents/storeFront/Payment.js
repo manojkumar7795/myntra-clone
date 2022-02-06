@@ -7,9 +7,9 @@ import firebase from 'firebase/compat/app';
 import UserHeader from './UserHeader';
 
 
-const Payment = (props) => {
-    const userName = props.user;
-    const userId = props.userId;
+const Payment = () => {
+    // const userName = JSON.parse(localStorage.getItem('userName'))
+    const userId = JSON.parse(localStorage.getItem('userId'))
     const [customer, setCustomer] = useState({})
 
     const { dispatch } = useContext(CartContext)

@@ -25,11 +25,11 @@ const ProductDetails = (props) => {
         currentVariant: '',
     })
 
-    const { dispatch } = useContext(CartContext)
+    // const { dispatch } = useContext(CartContext)
     const data = JSON.parse(localStorage.getItem('localCart'))
-    const context = useContext(CartContext)
+    // const context = useContext(CartContext)
     if (data == null)
-        var { shoppingCart } = context
+        var { shoppingCart } = props.data
 
     else {
         var { shoppingCart } = data;
@@ -207,7 +207,11 @@ const ProductDetails = (props) => {
                                 </div>
                             </div>
                             <div className="pdpActionContainer">
-                                <div className={ActiveVariant.length ? 'displayNone' : 'addToBag '} onClick={() => { dispatch({ type: 'ADD_TO_CART', id: product.currentVariant, product }) }}>
+                                {/* <div className={ActiveVariant.length ? 'displayNone' : 'addToBag '} onClick={() => { dispatch({ type: 'ADD_TO_CART', id: product.currentVariant, product }) }}>
+                                    <RiShoppingBagFill />
+                                    <span> ADD TO BAG</span>
+                                </div> */}
+                                <div className={ActiveVariant.length ? 'displayNone' : 'addToBag '} onClick={() => props.addToCartHandler({id: product.currentVariant, product })}>
                                     <RiShoppingBagFill />
                                     <span> ADD TO BAG</span>
                                 </div>

@@ -8,9 +8,9 @@ import NavLink from './NavLink'
 import OrderDetails from './OrderDetails'
 import Orders from './Orders'
 
-const User = (props) => {
-    const userId = props.userId
-    const user = props.user
+const User = () => {
+    const user = JSON.parse(localStorage.getItem('userName'))
+    const userId = JSON.parse(localStorage.getItem('userId'))
     let colUserCount = 0
     if (userId) {
         colUserCount = 2
@@ -34,9 +34,9 @@ const User = (props) => {
                         {user &&
                             <Switch>
                                 <Route path='/user/orders/:i/:id' component={OrderDetails} />
-                                <Route path='/user/account/' component={() => <Accounts userId={userId} />} />
-                                <Route path='/user/orders' component={() => <Orders userId={userId} />} />
-                                <Route path='/user/address' component={() => <Addressess userId={userId} />} />
+                                <Route path='/user/account/' component={() => <Accounts/>} />
+                                <Route path='/user/orders' component={() => <Orders/>} />
+                                <Route path='/user/address' component={() => <Addressess/>} />
                             </Switch>}
                     </BrowserRouter>
                 </Col>

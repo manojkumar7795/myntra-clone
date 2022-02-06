@@ -3,8 +3,8 @@ import { Image } from 'react-bootstrap';
 import { MdArrowForwardIos } from 'react-icons/md';
 import { db } from '../confing/confing';
 
-const Orders = (props) => {
-    const userId = props.userId
+const Orders = () => {
+    const userId = JSON.parse(localStorage.getItem('userId'))
     const [orders, setOrders] = useState([]);
     // feach orders 
     useEffect(() => {
